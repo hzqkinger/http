@@ -1,4 +1,4 @@
-src=sock.c
+src=HttpServer.c
 obj_sock:$(src)
 	g++ -o $@ $^ -lpthread
 .PHONY:clean

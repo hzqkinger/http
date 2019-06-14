@@ -7,17 +7,20 @@
 
 #include<stdio.h>
 #include<pthread.h>
-void *run(void* arg)
-{
-	int a = *(int*)arg;
-	printf("%d\n",a);
-	printf("--------------------------\n");
-}
+class A{
+public:
+	static void *run(void* arg)
+	{
+		int a = *(int*)arg;
+		printf("%d\n",a);
+		printf("--------------------------\n");
+	}
+};
 int main()
 {
 	pthread_t tid;
 	int a = 10;
-	pthread_create(&tid,NULL,run,(void*)&a);
+	pthread_create(&tid,NULL,A::run,(void*)&a);
 	//在这里测试时，最好设置线程属性为可结合的,否则主线程会先结束掉。
 	pthread_join(tid,NULL);
 	return 0;
