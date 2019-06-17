@@ -3,8 +3,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>开班信息</title>
-		<link rel="stylesheet" href="css/test24.css" />
-		<!--@import "../css/test24.css"-->
+		<!--
+			<link rel="stylesheet" href="/test24.css" />  导入外部文件的方法一
+			@import "../css/test24.css"     方法二
+		-->
 	</head>
 	
 	<body>
@@ -15,7 +17,7 @@
 			</div>
 			
 			<div class="bbb">
-				<h3 class="bbbh">JavaEE+云计算-全程就业班</h3>
+				<h3 class="bbbh">JavaEE+云计算-全程就业班</h3><!--{{{-->
 				<ul>
 					<li>
 						<a href="#">开班时间：<span>2018-01-24</span></a>
@@ -37,9 +39,9 @@
 						<a href="#">开班时间：2018-01-24</a>
 						<a class="rrr" href="#">开班盛况</a>
 					</li>
-				</ul>
+				</ul><!--}}}-->
 				
-				<h3 class="bbbh">Android+人工智能-全程就业班</h3>
+				<h3 class="bbbh">Android+人工智能-全程就业班</h3><!--{{{-->
 				<ul>
 					<li>
 						<a href="#">开班时间：<span>2018-01-24</span></a>
@@ -57,9 +59,9 @@
 						<a href="#">开班时间：2018-01-24</a>
 						<a class="rrr" href="#">开班盛况</a>
 					</li>
-				</ul>
+				</ul><!--}}}-->
 				
-				<h3 class="bbbh">前端+HTML5-全程就业班</h3>
+				<h3 class="bbbh">前端+HTML5-全程就业班</h3><!--{{{-->
 				<ul class="nobottomboder">
 					<li>
 						<a href="#">开班时间：<span>2018-01-24</span></a>
@@ -69,8 +71,70 @@
 						<a href="#">开班时间：2018-01-24</a>
 						<a class="rrr" href="#">开班盛况</a>
 					</li>
-				</ul>
+				</ul><!--}}}-->
 			</div>
 		</div>
+		<style type="test/css"><!--{{{-->
+			*{   /*特别注意，一定要把浏览器默认的样式清除掉*/
+				margin:0;
+				padding:0;
+			}
+			body{
+				font: 12px/1 宋体;
+			}
+			.outer{
+				width: 300px;
+				height: 473px;
+				/*background-color: #bfa;*/
+				margin: 50px auto;
+			}
+			.hhh{
+				border-top: 2px #019e8b solid;/*设置外边框*/
+				height: 36px;
+				line-height: 36px;
+				background-color: #f5f5f5;
+				padding: 0px 28px 0px 16px;/*设置内边距*/
+			}
+			a{
+				text-decoration: none;
+			}
+			a:hover{
+				color: red;
+				text-decoration: underline;
+			}
+			.hhh h3{
+				font:14px/36px "微软雅黑";
+			}
+			.hhh .haveline{
+				float:right;/*设置向右浮动*/
+				color: red;
+				text-decoration: underline;
+			}
+			
+			.bbb{
+				border: 1px solid #deddd9;
+				padding: 0px 28px 0px 20px;
+			}
+			.bbb .bbbh{
+				margin: 16px 0;
+			}
+			.bbb li{
+				margin:15px 0;
+			}
+			.bbb ul{
+				list-style: none;
+				border-bottom:1px dashed #deddd9;
+			}
+			.bbb .nobottomboder{
+				border-bottom: none;
+			}
+			.bbb ul .rrr{
+				float: right;
+			}
+			.bbb ul span{
+				color: red;
+				font-weight: bold;
+			}
+		</style><!--}}}-->
 	</body>
 </html>

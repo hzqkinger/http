@@ -1,6 +1,6 @@
-src=HttpServer.c
-obj_sock:$(src)
+src=HttpServer.c main.c
+main:$(src)
 	g++ -o $@ $^ -lpthread
 .PHONY:clean
 clean:
-	rm -rf obj_sock
+	rm -rf main
