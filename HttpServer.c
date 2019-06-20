@@ -1,25 +1,26 @@
-#include<unistd.h>
-#include<sys/socket.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<sys/wait.h>
-#include<sys/sendfile.h>
-#include<arpa/inet.h>
-#include<fcntl.h>
-#include<errno.h>
-
-#include<stdio.h>
-#include<iostream>
-using namespace std;
-#include<stdlib.h>
-#include<string.h>
-#include<pthread.h>
-#include<stdlib.h>
-
-#include<string>
-#include<map>
-
-#include"HttpServer.h"
+// #include<unistd.h>
+// #include<sys/socket.h>
+// #include<sys/types.h>
+// #include<sys/stat.h>
+// #include<sys/wait.h>
+// #include<sys/sendfile.h>
+// #include<arpa/inet.h>
+// #include<fcntl.h>
+// #include<errno.h>
+// 
+// #include<stdio.h>
+// #include<iostream>
+// using namespace std;
+// #include<stdlib.h>
+// #include<string.h>
+// #include<pthread.h>
+// #include<stdlib.h>
+// 
+// #include<string>
+// #include<map>
+// 
+ #include"HttpServer.h"
+#include"Log.h"
 #define Max 1024
 
 //socket bind listen
@@ -179,6 +180,111 @@ void httpServer::exec_cgi(int sockfd_cli,char *method,char *path,char *queryStri
 	}
 }/*}}}*/
 
+//-----------------------------------------------------
+void httpServer::getRequestToMap(int sockfd)//获取请求并把它存放在一个map表中/*{{{*/
+{
+	Json::Value root;
+	string str;
+
+	root["homePage"] = "index.html";
+
+	char line[Max];
+	get_line(sockfd,line,Max);
+	printf("请求行: %s\n",line);//////////////////////////
+	//将请求行放到Value对象中去
+	//GET /xxxx?yyR=z HTTP1.1     //GET /echoHello.html HTTP1.1
+	char *cur = line,*next = line;/*{{{*/
+	while(*next != ' ')++next;*next = 0;
+	root["method"] = cur;
+	cur = ++next;
+	bool flag = false;
+	while(*next != ' ' && *next != '?')++next;
+	if(*next == '?')flag = true;//说明这里有queryString
+	*next = 0;
+	root["path"] = cur;
+	cur = ++next;
+	if(flag){
+		while(*next != ' ')++next;*next = 0;
+		root["queryString"] = cur;
+		cur = ++next;
+	}
+	root["version"] = cur;/*}}}*/
+
+	//如果有，我只关心Content_Length字段；请求头的其它字段不关心
+	if(!(root["queryString"].asString().size())){/*{{{*/
+		const char *content = "Content-Length: ";
+		int content_len = 0;
+		//读取请求头，试图获取Content-Length字段信息
+		while(get_line(sockfd,line,Max) > 1){
+			//如果没有content-length字段，会把空行获取到,所以下面的clear_header会死
+			if(strncasecmp(line,content,strlen(content)) == 0){
+				content_len = atoi(line+ strlen(content));
+				break;
+			}
+		}
+		root["content-length"] = content_len;	
+		if(content_len)//如果content_len不为零，则空行没有被获取
+			clear_header(sockfd);//清除请求头信息
+////////////////////////////////////////////////////////////////////
+		//暂时认为post请求只发送一个请求
+		//我这里认为content_len小于Max(这是个潜在的bug)
+		memset(line,0,sizeof(line));
+		for(int i = 0; i < content_len;++i){
+			read(sockfd,line + i,1);
+		}
+		root["queryString"] = line;
+	}/*}}}*/
+
+	Json::FastWriter fw;
+	httpServer::_request[sockfd] = fw.write(root);
+}/*}}}*/
+void httpServer::responeGet(int sockfd)/*{{{*/
+{
+	Json::Value root;//method path queryString version content-length homePage
+	Json::Reader read;
+	read.parse(httpServer::_request[sockfd],root,false);
+
+	char path[Max/10];
+	sprintf(path,"wwwroot/html%s",root["path"].asString().c_str());
+	struct stat st;		
+	if(stat(path,&st) < 0){
+		printf("文件 %s 不存在\n",path);/*{{{*/
+//ho_errorPage(sockfd,,);//////////////////////////////
+	}else{
+		if(S_ISDIR(st.st_mode)){
+			strcat(path,root["homePage"].asString().c_str());
+			//如果访问的是目录，拼接成该目录下的首页
+			stat(path,&st);
+		}/*}}}*/
+	}
+	echo_header(sockfd,200);//发送响应头部
+	echo_www(sockfd,path,st.st_size);
+//	printf("path:\t%s\n",path);///////////////////////////
+}/*}}}*/
+void httpServer::responsePost(int sockfd)/*{{{*/
+{
+	Json::Value root;//method path queryString version content-length homePage
+	Json::Reader read;
+	read.parse(httpServer::_request[sockfd],root,false);
+
+	//重新拼装path路径，
+	char path[Max/10];
+	sprintf(path,"wwwroot/cgi%s",root["path"].asString().c_str());
+	struct stat st;
+	if(stat(path,&st) < 0){
+		printf("文件 %s 不存在\n",path);
+//ho_errorPage(sockfd,,);//////////////////////////////
+	}else{
+		if(!(st.st_mode & S_IXOTH)){//判断该文件的可执行
+//ho_errorPage(sockfd,,);//////////////////////////////
+		}
+	}
+	char *method = (char*)root["method"].asString().c_str();
+	char *queryString = (char*)root["queryString"].asString().c_str();
+	exec_cgi(sockfd,method,path,queryString);
+}/*}}}*/
+
+//-----------------------------------------------------
 void httpServer::requestInit(int sockfd_cli,char *line,char *&method,char *&url,char *&queryString,char *&version)/*{{{*/
 {
 	int lineIndex = 0;
@@ -292,3 +398,4 @@ void *httpServer::worker(void *arg)/*{{{*/
 }/*}}}*/
 	
 map<int,string> httpServer::_status;//静态变量初始化
+map<int,string> httpServer::_request;//静态变量初始化
