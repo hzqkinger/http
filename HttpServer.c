@@ -1,25 +1,4 @@
-// #include<unistd.h>
-// #include<sys/socket.h>
-// #include<sys/types.h>
-// #include<sys/stat.h>
-// #include<sys/wait.h>
-// #include<sys/sendfile.h>
-// #include<arpa/inet.h>
-// #include<fcntl.h>
-// #include<errno.h>
-// 
-// #include<stdio.h>
-// #include<iostream>
-// using namespace std;
-// #include<stdlib.h>
-// #include<string.h>
-// #include<pthread.h>
-// #include<stdlib.h>
-// 
-// #include<string>
-// #include<map>
-// 
- #include"HttpServer.h"
+#include"HttpServer.h"
 #include"Log.h"
 #define Max 1024
 
@@ -283,6 +262,56 @@ void httpServer::responsePost(int sockfd)/*{{{*/
 	char *queryString = (char*)root["queryString"].asString().c_str();
 	exec_cgi(sockfd,method,path,queryString);
 }/*}}}*/
+void httpServer::severIO(int *fd_list,const int fd_list_size,fd_set &rdset,int num)/*{{{*/
+{
+	printf("--------------第%d次进入severIO函数-----------------\n",num);
+	for(int i = 0; i < fd_list_size;++i)
+	{
+		if(fd_list[i] == -1)
+			continue;
+
+		//处理服务器端的监听套接字描述符
+		if(i == 0 && FD_ISSET(fd_list[i],&rdset)){/*{{{*/
+			struct sockaddr_in sock_cli;
+			socklen_t len_cli;
+			int sockfd_cli = accept(fd_list[i],(sockaddr*)&sock_cli,&len_cli);
+			if(sockfd_cli < 0){
+				perror("accept");
+				continue;
+			}
+			//得到一个连接，一定不要去读或写，先要把它放到fd_list中
+			int k = 0;//rdset和wrset相应位置没有置1,所以可以放在fd_list中
+			while(k < fd_list_size && fd_list[k] != -1)++k;
+			if(k < fd_list_size)fd_list[k] = sockfd_cli;
+			else {printf("fd_list is full\n");close(sockfd_cli);}
+
+			continue;
+		}/*}}}*/
+
+		//处理与客户端相关的套接字描述符 的读事件
+		if(FD_ISSET(fd_list[i],&rdset)){
+			//此时它的读事件已经就绪
+			httpServer::getRequestToMap(fd_list[i]);//获取请求并把它存放在一个map表中
+//---我认为一个文件描述符的读事件就绪了；那么它的写事件一定就绪了------
+			//处理与客户端相关的套接字描述符 的写事件
+			//if(FD_ISSET(fd_list[i],&wrset)){/*{{{*/
+				//此时它的写事件已经就绪
+				Json::Value root;
+				Json::Reader read;
+				read.parse(httpServer::_request[fd_list[i]],root,false);
+	
+				if(root["queryString"].asString().size() != 0){//执行cgi
+					httpServer::responsePost(fd_list[i]);
+				}else{//执行get方法
+					httpServer::responeGet(fd_list[i]);
+				}
+				//读写完之后，关闭该文件描述符，并把它从fd_list中扔掉
+				close(fd_list[i]);
+				fd_list[i] = -1;
+		//	}/*}}}*/
+		}
+	}
+}/*}}}*/
 
 //-----------------------------------------------------
 void httpServer::requestInit(int sockfd_cli,char *line,char *&method,char *&url,char *&queryString,char *&version)/*{{{*/
@@ -368,7 +397,6 @@ void httpServer::responsePost(int sockfd_cli,char *method,char *path,char *url,c
 	}
 	exec_cgi(sockfd_cli,method,path,queryString);
 }/*}}}*/
-
 void *httpServer::worker(void *arg)/*{{{*/
 {
 	int sockfd_cli = *(int*)arg;

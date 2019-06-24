@@ -42,7 +42,7 @@ public:
 	static void echo_header(int sock,int status);
 	static void clear_header(int sock);
 	static int echo_www(int sock, const char *path, int size);
-	static int get_line(int sock, char line[], int num);// line -> \r,\r\n,\n->\n
+	static int get_line(int sock, char line[], int num);//line -> \r,\r\n,\n->\n
 	static void print_request(int sock);
 	static void exec_cgi(int sockfd_cli,char *method,char *path,char *queryString);
 
@@ -56,6 +56,7 @@ public:
 	static void getRequestToMap(int sockfd_cli);
 	static void responeGet(int sockfd_cli);
 	static void responsePost(int sockfd_cli);
+	static void severIO(int *fd_list,const int list_size,fd_set &rdset,int num);
 };
 
 #endif
