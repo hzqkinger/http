@@ -159,6 +159,11 @@ void httpServer::exec_cgi(int sockfd_cli,char *method,char *path,char *queryStri
 	}
 }/*}}}*/
 
+
+//-----------------------------------------------------
+void httpServer::severIO(int epfd,struct epoll_event ev_arr,int arr_size,int sockfd_ser)
+{
+}
 //-----------------------------------------------------
 void httpServer::getRequestToMap(int sockfd)//获取请求并把它存放在一个map表中/*{{{*/
 {
@@ -295,7 +300,6 @@ void httpServer::severIO(int *fd_list,const int fd_list_size,fd_set &rdset,int n
 			httpServer::getRequestToMap(fd_list[i]);//获取请求并把它存放在一个map表中
 //---我认为一个文件描述符的读事件就绪了；那么它的写事件一定就绪了------
 			//处理与客户端相关的套接字描述符 的写事件
-		}
 			//if(FD_ISSET(fd_list[i],&wrset)){/*{{{*/
 	printf("--------------文件描述符%d的读事件就绪-----------------\n",fd_list[i]);
 				//此时它的写事件已经就绪
@@ -311,7 +315,8 @@ void httpServer::severIO(int *fd_list,const int fd_list_size,fd_set &rdset,int n
 				//读写完之后，关闭该文件描述符，并把它从fd_list中扔掉
 				close(fd_list[i]);
 				fd_list[i] = -1;
-		//	}/*}}}*/
+			//}/*}}}*/
+		}
 	}
 }/*}}}*/
 
