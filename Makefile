@@ -1,6 +1,6 @@
 INCLUDE=./lib/jsoncpp/include
 LIB_PATH=./lib/jsoncpp/lib
-FLAG=-ljsoncpp -g# -lpthread
+FLAG=-ljsoncpp -g #-lpthread
 
 src=HttpServer.c main.c
 main:$(src)

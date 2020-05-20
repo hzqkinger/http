@@ -146,7 +146,8 @@ void httpServer::exec_cgi(int sockfd_cli,char *method,char *path,char *queryStri
 		close(output[0]);//关闭读端
 		dup2(output[1],1);
 		execl(path,path,NULL);
-		printf("我不应该被打印出来\n");
+		//path : wwwroot/cgi/date-counter-r.html
+		printf("%s: 我不应该被打印出来\n",path);
 	}else{//father
 		close(output[1]);//关闭写端
 		echo_header(sockfd_cli,200);	
@@ -159,11 +160,12 @@ void httpServer::exec_cgi(int sockfd_cli,char *method,char *path,char *queryStri
 	}
 }/*}}}*/
 
-
+/*
 //-----------------------------------------------------
 void httpServer::severIO(int epfd,struct epoll_event ev_arr,int arr_size,int sockfd_ser)
 {
 }
+*/
 //-----------------------------------------------------
 void httpServer::getRequestToMap(int sockfd)//获取请求并把它存放在一个map表中/*{{{*/
 {

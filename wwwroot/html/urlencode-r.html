@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<script type="text/javascript">
+			function getFieldSelection()
+			{
+     			/*var word = document.getElementById('sss').value;
+				alert(word);*/
+				var word1 = document.getElementById('sss');
+				//word1.value = "xxxxxxxxxxxxxx";
+ 			   	
+				var word2 = document.getElementById('ttt');
+				word2.value = encodeURI(word1.value);
+			}
+		</script>
+
+
+	</head>
+	<body>
+		<div>
+			<form action="/urlencode" style="margin:auto 15px;" method="post">
+				<h1>URL在线编码工具<font color="#808080" size="3">(请在下框中输入url:eg. www.baidu.com)</font></h1>
+				<textarea  id="sss" name="url" cols="80" rows="10" value="sss"></textarea>
+				<br>
+				<!-- <input type="submit" value="submit"> -->
+				
+			</form>
+			<div style="margin:auto 15px;">
+				<button onclick="getFieldSelection()">submit</button>
+				<h1>转码后的译文：</h1>
+				<textarea  id="ttt" name="url" cols="80" rows="10" value="sss"></textarea>
+			</div>
+				
+		</div>
+	</body>
+</html>
+<!--
+	<textarea></textarea>用来创建一个可以输入多行的文本框，此标志对用于<form></form>标志对之间。<textarea>具有以下属性： 
+	(1)onchange指定控件改变时要调用的函数
+	(2)onfocus当控件接受焦点时要执行的函数
+	(3)onblur当控件失去焦点时要执行的函数
+	(4)onselect当控件内容被选中时要执行的函数
+	(5)name这文字区块的名称，作识别之用，将会传及 CGI。 
+	(6)cols这文字区块的宽度。 
+	(7)rows这文字区块的列数，即其高度。 
+	(8)wrap属性 定义输入内容大于文本域时显示的方式，可选值如下： 
+		*默认值是文本自动换行；当输入内容超过文本域的右边界时会自动转到下一行，而数据在被提交处理时自动换行的地方不会有换行符出现； 
+		*Off，用来避免文本换行，当输入的内容超过文本域右边界时，文本将向左滚动； 
+		*Virtual，允许文本自动换行。当输入内容超过文本域的右边界时会自动转到下一行，而数据在被提交处理时自动换行的地方不会有换行符出现； 
+		*Physical,让文本换行,当数据被提交处理时换行符也将被一起提交处理。 
+		这里列与行是以字符数为单位的
+		
+	1、为什么要编码：（url文本字符集为utf8编码）
+		网络标准RFC 1738规定url中只能包含英文字母和阿拉伯数字，以及一些特殊字符：
+		“只有字母和数字[0-9a-zA-Z]、和特殊符号”$-_.+!*’(),”[不包括双引号]、及某些保留字，才可以不经过编码直接用于URL。”
+		此时如果url中包含如汉字或者其他特殊字符则需要对它进行编码，编码的意义在于，假如url的参数中的中文或特殊字符在发送到服务端时，服务端无法解析它的真正意义，会导致服务端不能理解客户端的请求。。
+-->

@@ -1,19 +1,140 @@
+<!DOCTYPE html>
 <html>
 	<head>
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<meta charset="utf-8" />
+		<!--<link rel="stylesheet" href="css/hzq.css">-->
+		<title></title>
+		<style>
+			/*设置导航条的宽度和高度以及背景颜色*/
+			.nav{width:100%;height: 50px;margin: 30px auto;background-color: black;}
+			/*设置无序列表的属性*/
+			.nav ul{width:100%;list-style-type: none;padding: 0;margin: 0;}
+			.nav ul li{float:left;width: 20%;}
+			/*设置链接的属性*/
+			.nav ul li a{display: inline-block;width: 100%;height:50px;text-align: center;line-height: 50px;color: #ffffff;text-decoration: none;}
+			.nav ul li a:hover{background: red;}
+
+			.box{overflow: hidden;width: 300px;margin: 30px auto;background-color: yellow;border: 1px solid black;}
+			.picture{float: left;}
+			.name-desc{margin-left: 20px;float: left;}
+		</style>
 	</head>
-	<body>
-		<form action="/date_cal" method="post">
-			<h1>比较两个日期之间相差的天数</h1>
-			<h1>第一个日期<input type="text" name="date1" value="" placeholder="2019-6-11">
-			<h1>第二个日期<input type="text" name="date2" value="" placeholder="2019-9-1">
-			<br><br><input type="submit" value="submit"></h1>
-		</form>
-		<!--
-		<a href="/classInfo_24th.html">查看24班授课情况</a>
-		<a href="http://192.168.31.121:8080/select_cgi">查看</a>
-		-->
-		<img src="/self-cultivate.png" alt="self-cultivate.png" >
+	<body background="red.jpeg" style="background-size: 100% 100%;background-attachment: fixed;">
+		<!-- ==========================导航栏================================== -->	
+		<div class="nav">
+			<ul>
+        		<li><a href="index.html">ALL</a></li>
+        		<li><a href="date-counter.html">date counter</a></li>
+				<li><a href="urlencode.html">urlencode</a></li>
+				<li><a href="reptile.html">reptile</a></li>
+				<li><a href="review.html">server resource</a></li>
+    		</ul>
+		</div>
+		<!-- ==========================第一个盒子================================== -->	
+         <div class="box">
+            <div class="picture">
+                <!--
+                    a标签：
+                        href:URL 规定链接所指向的页面的URL
+                        target:<_blank|_parent|_self|_top|farmename> 规定在何处打开链接文档
+                        rel:text 规定当前文档与链接文档之间的关系
+                    img标签：
+                        src:"" 标明图片的路径，
+                        alt:"" alt中可以输入文本，当图片的路径错误是就会显示该文本内容
+                        title:"" 当鼠标悬停时所显示的内容
+                -->
+                <a class="picture-hide" href="date-counter-r.html" target="_blank" rel="nofollow">
+                    <img src="drink.jpg" width="110" height="96" alt="date counter" title="date counter">
+                </a>
+            </div>
+                                
+            <div class="name-desc">
+                <h4>
+                    <a class="name" href="date-counter-r.html" title="date counter" rel="nofollow" target="_blank">
+                        	date counter	
+                            <font style="font-size: 13px;"></font>	
+                    </a>
+                </h4>
+                <p class="desc" style="width:160px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="日期计算器计算两个日期之间的天数差">日期计算器计算两个日期之间的天数差</p>
+            </div>
+        </div>
+        
+		<!-- ==========================第二个盒子================================== -->	
+        <div class="box">
+            <div class="picture">
+                <a class="picture-hide" href="urlencode-r.html" target="_blank" rel="nofollow">
+                    <img src="drink.jpg" width="110" height="96" alt="urlencode" title="urlencode">
+                </a>
+            </div>
+                                
+            <div class="name-desc">
+                <h4>
+                    <a class="name" href="urlencode-r.html" title="urlencode" rel="nofollow" target="_blank">
+                        	urlencode
+                            <font style="font-size: 13px;"></font>	
+                    </a>
+                </h4>
+                <p class="desc" style="width:160px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="将url中的特殊字符转换成合法字符">将url中的特殊字符转换成合法传输字符</p>
+            </div>
+        </div>
+
+		<!-- ==========================第三个盒子================================== -->	
+        <div class="box">
+            <div class="picture">
+                <a class="picture-hide" href="reptile-r.html" target="_blank" rel="nofollow">
+                    <img src="drink.jpg" width="110" height="96" alt="reptile" title="reptile">
+                </a>
+            </div>
+                                
+            <div class="name-desc">
+                <h4>
+                    <a class="name" href="reptile-r.html" title="reptile" rel="nofollow" target="_blank">
+                        	reptile
+                            <font style="font-size: 13px;"></font>	
+                    </a>
+                </h4>
+                <p class="desc" style="width:160px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="爬取某个网站的一些资源">爬取某个网站的一些资源</p>
+            </div>
+        </div>
+        
+		<!-- ==========================第四个盒子================================== -->	
+        <div class="box">
+            <div class="picture">
+                <a class="picture-hide" href="review-r.html" target="_blank" rel="nofollow">
+                    <img src="drink.jpg" width="110" height="96" alt="review" title="review">
+                </a>
+            </div>
+                                
+            <div class="name-desc">
+                <h4>
+                    <a class="name" href="review-r.html" title="日期计算器" rel="nofollow" target="_blank">
+                        	server source	
+                            <font style="font-size: 13px;"></font>	
+                    </a>
+                </h4>
+                <p class="desc" style="width:160px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="server source">server source</p>
+            </div>
+        </div>
+
+		<!-- ==========================第五个盒子================================== -->	
+<!--
+        <div class="box">
+            <div class="picture">
+                <a class="picture-hide" href="https://www.toolnb.com/tools/gitmind.html" target="_blank" rel="nofollow">
+                    <img src="drink.jpg" width="110" height="96" alt="日期计算器" title="日期计算器" class="lazyloadimg" original="https://wstatic.apizl.com/tools/upload/201912/7323911052.png?w=50&amp;h=50">
+                </a>
+            </div>
+                                
+            <div class="name-desc">
+                <h4>
+                    <a class="name" href="https://www.toolnb.com/tools/gitmind.html" title="日期计算器" rel="nofollow" target="_blank">
+                        	日期计算器
+                            <font style="font-size: 13px;"></font>	
+                    </a>
+                </h4>
+                <p class="desc" style="width:160px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="日期计算器计算两个日期之间的天数差">日期计算器计算两个日期之间的天数差</p>
+            </div>
+        </div>
+-->
 	</body>
 </html>
-
