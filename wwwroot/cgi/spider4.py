@@ -14,3 +14,6 @@ print url.split('=')[-1]
 print("==============================")
 url_encode = "https%3A%2F%2Fwww.tohomh123.com%2Fsanniancha%2F1.html"
 print urllib.unquote(url_encode).decode('utf-8', 'replace').encode('gbk', 'replace')
+
+
+

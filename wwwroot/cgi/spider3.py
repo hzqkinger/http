@@ -3,10 +3,18 @@
 
 ############## get all html page #######################################
 import requests
+import os
+import urllib
+
 url = "http://image.baidu.com/search/index?tn=baiduimage&ct=201326592&lm=-1&cl=2&ie=gb18030&word=%CD%BC%C6%AC&fr=ala&ala=1&alatpl=adress&pos=0&hs=2&xthttps=000000"
 url = "https://www.baidu.com"
 url = "https://www.tohomh123.com/yirenzhixia/"
 url = "https://www.tohomh123.com/sanniancha/1.html"
+
+################## get url from browse ##############
+url = os.getenv('queryString').split('=')[-1]
+url = urllib.unquote(url).decode('utf-8', 'replace').encode('gbk', 'replace')
+
 r = requests.get(url)
 #print(r.status_code)
 #print(r.encoding)
