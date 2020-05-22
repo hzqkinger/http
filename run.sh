@@ -22,3 +22,13 @@ make
 # windows上的浏览器访问不了服务器的原因：
 # 一、改变虚拟机的网络适配器，
 # 二、关闭防火墙：（su   systemctl firewalld.service;systemct disable firewalld.service）
+
+
+# 使用git进行版本控制（注意，在root下进行提交）
+# 一、git add *
+# 二、git commit -m "xxxxxx"
+# 三、git push
+# 四、git reflog
+# 五、git reset --hard xxxx
+
+

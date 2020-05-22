@@ -50,27 +50,29 @@ import os
 localxx = []
 root =  "/home/hzq/project/http/wwwroot/html/"
 i = 0
-str = ""
+#str = ""
 for link in links:
 	#print(str + bytes(i) + ": " + link)
+	start = link.split(':')[0]
 	tmp = link.split('.')[-1]
-	if tmp == "jpg" or tmp == "png" or tmp == "jpeg":
-		path = root + bytes(i) + "." + link.split('.')[-1]
-		tmp_path = bytes(i) + "." + link.split('.')[-1]
-		i = i + 1
-		localxx.append(tmp_path)
-		#print(path)
-		try:
-			if not os.path.exists(root):
-				os.mkdir(root)
-			#if not os.path.exists(path):
-			r = requests.get(link)
-			#print(r.status_code)
-			with open(path,'wb') as f:
-				f.write(r.content)
-				f.close()
-		except:
-			print("")
+	if start == "https" or start == "http":
+		if tmp == "jpg" or tmp == "png" or tmp == "jpeg":
+			path = root + bytes(i) + "." + link.split('.')[-1]
+			tmp_path = bytes(i) + "." + link.split('.')[-1]
+			i = i + 1
+			localxx.append(tmp_path)
+			#print(path)
+			try:
+				if not os.path.exists(root):
+					os.mkdir(root)
+				#if not os.path.exists(path):
+				r = requests.get(link)
+				#print(r.status_code)
+				with open(path,'wb') as f:
+					f.write(r.content)
+					f.close()
+			except:
+				print("")
 	
 
 ############## put local img to standard output ######################################
