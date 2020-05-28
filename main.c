@@ -61,7 +61,7 @@ int main(int argc,char *argv[])
 				printf("timeout\n");
 				break;
 			default:
-				printf("开始执行serverIO函数\n");
+				printf("开始执行serverIO函数:%s:%d\n",__FILE__,__LINE__);
 				httpServer::severIO(fd_list,fd_list_size,rdset,connCliNum);
 				++connCliNum;
 				break;
